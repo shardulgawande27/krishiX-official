@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Navigate, useNavigate, Link } from "react-router-dom";
-import meetNowWhite from "../assets/meetnow-white.png";
-import meetNowBlue from "../assets/meetnow-blue.png";
+import KirshiX from "./assets/KrishiXLogo.png";
+// import meetNowBlue from "./assets/meetnow-blue.png";
 
 const Login = () => {
   const [users, setUsers] = useState([]);
@@ -32,7 +32,7 @@ const Login = () => {
       setUsername("");
       setPassword("");
       fetchUsers();
-      navigate("/account");
+      navigate("/home");
       window.location.reload();
       localStorage.setItem("token", token);
     } catch (error) {
@@ -48,7 +48,7 @@ const Login = () => {
       >
         <div className="w-[40%] h-[100%] flex flex-col justify-center items-center bg-#205bd4">
           <img
-            src={meetNowWhite}
+            src={KirshiX}
             alt="MeetNow-logo-white"
             className="mb-4"
             style={{ width: "35%", height: "auto" }}
@@ -69,11 +69,7 @@ const Login = () => {
           <p className="text-black mt-4">Seamless Plant Care, Every Scan.</p>
 
           <div className="absolute top-5 right-5 flex items-center">
-            <img
-              src={meetNowBlue}
-              alt="Company Logo"
-              className="w-8 h-8 mr-2"
-            />
+            <img src={KirshiX} alt="Company Logo" className="w-8 h-8 mr-2" />
             <span className="text-lg text-black font-bold">KrishiX</span>
           </div>
           <form

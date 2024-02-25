@@ -10,7 +10,7 @@ require("dotenv").config();
 const SECRET_KEY = process.env.SECRET_KEY;
 // connect to express app
 const app = express();
-
+const PORT = 3004;
 // connect to mongoDB
 mongoose
   .connect(process.env.usersDB, {
@@ -18,13 +18,13 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(3004, () => {
-      console.log("server is connected on port 3001");
+    app.listen(PORT, () => {
+      console.log(`server is connected on localhost:${PORT}`);
     });
+  })
+  .catch((error) => {
+    console.log(error);
   });
-// .catch((error) => {
-//   console.log("Unable to connect to server or mongoDB");
-// });
 // middleware
 app.use(bodyParser.json());
 app.use(cors());
@@ -67,10 +67,47 @@ app.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid password" });
     }
     const token = jwt.sign({ userId: user._id }, SECRET_KEY, {
-      expiresIn: "1hr",
+      expiresIn: "3h",
+      algorithm: "HS256",
     });
-    res.json({ message: "login successful" });
+    res.json({ username, password, token, message: "login successful" });
   } catch (error) {
     res.status(500).json({ error: "Error logginig in" });
+  }
+});
+
+// authentication token
+
+const authenticateToken = (req, res, next) => {
+  const token = req.headers.authorization;
+  if (!token) {
+    return res.status(401).json({ error: "Token not provided" });
+  }
+  console.log(token);
+  jwt.verify(token.split(" ")[1], SECRET_KEY, (err, user) => {
+    if (err) {
+      console.log(err); // Log the error for debugging
+      return res.status(403).json({ error: "Token is not valid" });
+    }
+    req.user = user;
+    next();
+  });
+};
+
+app.get("/protectedRoute", authenticateToken, async (req, res) => {
+  // Your protected route logic here
+  const userId = req.user.userId;
+
+  const userData = await User.findById(userId);
+
+  res.json({ userData, message: "Access granted" });
+});
+
+app.get("/userProfile", authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId);
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching user profile" });
   }
 });

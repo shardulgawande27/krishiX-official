@@ -87,7 +87,7 @@ const Signup = () => {
         </div>
         <div className="absolute top-5 left-5 flex items-center">
           <img src={meetNowBlue} alt="Company Logo" className="w-8 h-8 mr-2" />
-          <span className="text-lg text-black font-bold">Meet Now</span>
+          <span className="text-lg text-black font-bold">KrishiX</span>
         </div>
 
         <form
@@ -450,9 +450,9 @@ const Signup = () => {
             className="text-5xl mb-2   text-white "
             style={{ fontWeight: "600" }}
           >
-            Meet Now
+            KrishiX
           </h1>
-          <p className=" text-white">Effortless Meetings, Every Time.</p>
+          <p className=" text-white">Seamless Plant Care, Every Scan.</p>
         </div>
       </div>
     </div>
